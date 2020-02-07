@@ -7,6 +7,34 @@
 
 #include "mem.h"
 
+void free(void *ptr)
+{
+	ptr = ptr;
+	return;
+}
+
+void *calloc(size_t nmemb, size_t size)
+{
+	nmemb = nmemb;
+	size = size;
+	return (NULL);
+}
+
+void *realloc(void *ptr, size_t size)
+{
+	ptr = ptr;
+	size = size;
+	return (NULL);
+}
+
+void *reallocarray(void *ptr, size_t nmemb , size_t size)
+{
+	ptr = ptr;
+	nmemb = nmemb;
+	size = size;
+	return (NULL);
+}
+
 size_t power(size_t len)
 {
 	size_t count = 1;
@@ -21,8 +49,10 @@ size_t power(size_t len)
 	while ()
 }*/
 
+
 void *malloc(size_t len)
 {
+	len = len;
 	static memory_t *mem = NULL;
 	int pages = 2 * getpagesize();
 	int unit = len / pages + (len % pages != 0);

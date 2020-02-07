@@ -19,4 +19,10 @@ typedef struct memory_s {
     struct memory_s *next;
 } memory_t;
 
+void *malloc(size_t len);
+void free(void *ptr) ;
+void * calloc(size_t nmemb, size_t size);
+void * realloc(void *ptr, size_t size);
+void * reallocarray(void *ptr, size_t nmemb, size_t size);
+
 #endif /* !MEM_H_ */
