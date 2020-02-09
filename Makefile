@@ -5,7 +5,8 @@
 ## Makefile
 ##
 
-SRC	=	./malloc.c \
+SRC	=	malloc.c \
+		linked_list.c
 
 OBJ	=	$(SRC:.c=.o)
 
