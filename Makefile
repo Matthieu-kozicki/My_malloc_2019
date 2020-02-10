@@ -6,7 +6,8 @@
 ##
 
 SRC	=	malloc.c \
-		linked_list.c
+		linked_list.c 	\
+		my_put_nbr.c
 
 OBJ	=	$(SRC:.c=.o)
 

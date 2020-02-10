@@ -31,4 +31,8 @@ void *reallocarray(void *ptr, size_t nmemb, size_t size);
 void print_linked(memory_t *mem);
 void *find_place_list(size_t len, memory_t *mem);
 
+void  my_put_nbr(int nb);
+void my_put_base(char *base, unsigned int nb);
+int my_put_adress(long nb);
+
 #endif /* !MEM_H_ */

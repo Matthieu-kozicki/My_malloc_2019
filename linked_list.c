@@ -28,14 +28,16 @@ void *find_place_list(size_t len, memory_t *mem)
 	int time = 0;
 	size_t saving = 0;
 	memory_t *save = NULL;
+	//write(1,"find place",10);
 	memory_t *tmp = mem->head;
 
 	while (tmp != NULL) {
 		if (tmp->used == false && tmp->len >= len) {
 			if (time == 0) {
 				time++;
-				save = (void *) (long)tmp + (sizeof(memory_t));
+				save = (void *) (long)tmp; //+ (sizeof(memory_t));
 				saving = save->len;
+				save = (void *) (long)save + (sizeof(memory_t));
 			}
 			if (time != 0 && tmp->len < saving) {
 				saving = tmp->len;
@@ -49,5 +51,6 @@ void *find_place_list(size_t len, memory_t *mem)
 		save->used = true;
 		save = (void *) (long)save + sizeof(memory_t);
 	}
+	//write(1,"fin\n",4);
 	return (save);
 }
