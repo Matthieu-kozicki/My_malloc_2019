@@ -69,28 +69,3 @@ char *my_revstr(char *str)
     }
     return (str);
 }
-
-/*int my_put_adress(long nb)
-{
-    char str[100];
-    int stock = 0;
-    int i = 0;
-
-    write(1, "0x", 2);
-    if (nb == 0) {
-        write(1, "0", 1);
-        return (0);
-    }
-    for (i = 0 ; nb != 0 ; i++) {
-        stock = nb % 16;
-        if (stock > 9)
-            str[i] = stock + 87;
-        else
-            str[i] = stock + 48;
-        nb /= 16;
-    }
-    str[i] = '\0';
-    my_putstr(my_revstr(str));
-    return (0);
-}*/
-

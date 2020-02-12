@@ -9,11 +9,11 @@
 
 size_t power(size_t len)
 {
-	size_t count = 1;
+    size_t count = 1;
 
-	while (count < len)
-		count = count * 2;
-	return (count);
+    while (count < len)
+        count = count * 2;
+    return (count);
 }
 
 bool mul_overflow(int x, int y)

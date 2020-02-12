@@ -11,107 +11,107 @@ memory_t *mem = NULL;
 
 void free(void *ptr)
 {
-	memory_t *tmp = mem->head;
+    memory_t *tmp = mem->head;
 
-	if (ptr == NULL)
-		return;
-	while (tmp != NULL) {
-		if ((void *) (long)tmp + sizeof(memory_t) == ptr) {
-			tmp->used = false;
-			return;
-		}
-		tmp = tmp->next;
-	}
+    if (ptr == NULL)
+        return;
+    while (tmp != NULL) {
+        if ((void *) (long)tmp + sizeof(memory_t) == ptr) {
+            tmp->used = false;
+            return;
+        }
+        tmp = tmp->next;
+    }
 }
 
 void *malloc(size_t len)
 {
-	static long unsigned int memory_unused = 0;
-	int pages = 2 * getpagesize();
-	memory_t *tmp = NULL;
-	int unit = ( sizeof(memory_t) + power(len)) / pages + (sizeof(memory_t) + (power(len)) % pages != 0);
+    static long unsigned int memory_unused = 0;
+    int pages = 2 * getpagesize();
+    memory_t *tmp = NULL;
+    int unit = ( sizeof(memory_t) + power(len)) / pages + (sizeof(memory_t) + (power(len)) % pages != 0);
 
-	if (len == 0) return (NULL);
-	if (mem == NULL) {
-		mem = sbrk(pages * unit);
-		memory_unused = (pages * unit) - (sizeof(memory_t) + (int)power(len));
-		mem->used = true;
-		mem->len = power(len);
-		mem->next = NULL;   
-	    mem->head = mem;
-		//print_linked(mem);
-		return ((void *) (long)mem  + sizeof(memory_t));
-	}
-	tmp = find_place_list(len, mem);
-	if (tmp != NULL) {
-		return (tmp);
-	} else if (memory_unused < sizeof(memory_t) + (int)power(len)) {
-		if (sbrk(pages * unit) == (void *)-1)
-			return (NULL);
-		memory_unused += (pages * unit);
-	}
-	memory_unused -= (sizeof(memory_t) + (int)power(len));
-	return (put_in_end(len, mem));
+    if (len == 0) return (NULL);
+    if (mem == NULL) {
+        mem = sbrk(pages * unit);
+        memory_unused = (pages * unit) - (sizeof(memory_t) + (int)power(len));
+        mem->used = true;
+        mem->len = power(len);
+        mem->next = NULL;   
+        mem->head = mem;
+        //print_linked(mem);
+        return ((void *) (long)mem  + sizeof(memory_t));
+    }
+    tmp = find_place_list(len, mem);
+    if (tmp != NULL) {
+        return (tmp);
+    } else if (memory_unused < sizeof(memory_t) + (int)power(len)) {
+        if (sbrk(pages * unit) == (void *)-1)
+            return (NULL);
+        memory_unused += (pages * unit);
+    }
+    memory_unused -= (sizeof(memory_t) + (int)power(len));
+    return (put_in_end(len, mem));
 }
 
 void *realloc(void *ptr, size_t size)
 {
-	memory_t *save = NULL;
+    memory_t *save = NULL;
 
-	if (ptr == NULL)
-		return (malloc(size));
-	if (size == 0 && ptr != NULL) {
-		free(ptr);
-		return (NULL);
-	}
-	save = (void *)((long)ptr - sizeof(memory_t));
-	if (size <= save->len)
-		return (ptr);
-	free(ptr);
+    if (ptr == NULL)
+        return (malloc(size));
+    if (size == 0 && ptr != NULL) {
+        free(ptr);
+        return (NULL);
+    }
+    save = (void *)((long)ptr - sizeof(memory_t));
+    if (size <= save->len)
+        return (ptr);
+    free(ptr);
 
-	return (memcpy(malloc(size), ptr, save->len));
+    return (memcpy(malloc(size), ptr, save->len));
 }
 
 void *reallocarray(void *ptr, size_t nmemb , size_t size)
 {
-	if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
-	return (realloc(ptr, size* nmemb));
+    if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
+    return (realloc(ptr, size* nmemb));
 }
 
 void *calloc(size_t nmemb, size_t size)
 {
-	size_t total = nmemb * size;
-	char *ptr = NULL;
+    size_t total = nmemb * size;
+    char *ptr = NULL;
 
-	if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
-	ptr = malloc(total);
-	if (!ptr) return (NULL);
-	for (size_t count = 0; count < total; count++)
-		ptr[count] = 0;
-	return (ptr);
+    if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
+    ptr = malloc(total);
+    if (!ptr) return (NULL);
+    for (size_t count = 0; count < total; count++)
+        ptr[count] = 0;
+    return (ptr);
 }
 
 /*int main() 
-{ 
-   int *ptr = (int *)my_malloc(sizeof(int)*2); 
-   int i; 
-   int *ptr_new; 
+  { 
+  int *ptr = (int *)my_malloc(sizeof(int)*2); 
+  int i; 
+  int *ptr_new; 
      
-   *ptr = 10;  
-   *(ptr + 1) = 20; 
+  *ptr = 10;  
+  *(ptr + 1) = 20; 
      
-   ptr_new = (int *)my_realloc(ptr, sizeof(int)*3); 
-   *(ptr_new + 2) = 30; 
-   for(i = 0; i < 3; i++) 
-       printf("%d ", *(ptr_new + i)); 
-	my_free(ptr_new);
-   //getchar(); 
-   return 0; 
-}*/
+  ptr_new = (int *)my_realloc(ptr, sizeof(int)*3); 
+  *(ptr_new + 2) = 30; 
+  for(i = 0; i < 3; i++) 
+  printf("%d ", *(ptr_new + i)); 
+  my_free(ptr_new);
+  //getchar(); 
+  return 0; 
+  }*/
 
 /*int main (void)
-{
-	for (int i = 0; i < 100; i++)
-		malloc(1000);
-	return (0);
-}*/
+  {
+  for (int i = 0; i < 100; i++)
+  malloc(1000);
+  return (0);
+  }*/
