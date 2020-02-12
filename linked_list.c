@@ -1,7 +1,8 @@
-/** EPITECH PROJECT, 2020
+/*
+** EPITECH PROJECT, 2020
 ** PSU_2019_malloc
 ** File description:
-** info_list
+** linked list
 */
 
 #include "mem.h"
