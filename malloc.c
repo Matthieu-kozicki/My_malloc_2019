@@ -39,7 +39,6 @@ void *malloc(size_t len)
         mem->len = power(len);
         mem->next = NULL;   
         mem->head = mem;
-        //print_linked(mem);
         return ((void *) (long)mem  + sizeof(memory_t));
     }
     tmp = find_place_list(len, mem);
@@ -90,28 +89,3 @@ void *calloc(size_t nmemb, size_t size)
         ptr[count] = 0;
     return (ptr);
 }
-
-/*int main() 
-  { 
-  int *ptr = (int *)my_malloc(sizeof(int)*2); 
-  int i; 
-  int *ptr_new; 
-     
-  *ptr = 10;  
-  *(ptr + 1) = 20; 
-     
-  ptr_new = (int *)my_realloc(ptr, sizeof(int)*3); 
-  *(ptr_new + 2) = 30; 
-  for(i = 0; i < 3; i++) 
-  printf("%d ", *(ptr_new + i)); 
-  my_free(ptr_new);
-  //getchar(); 
-  return 0; 
-  }*/
-
-/*int main (void)
-  {
-  for (int i = 0; i < 100; i++)
-  malloc(1000);
-  return (0);
-  }*/

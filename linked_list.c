@@ -18,7 +18,6 @@ void print_linked(memory_t *mem)
         printf("%s", new->used ? "is used :true " : "is used : false ");
         printf("new should be : %p\n", (void *) (long)new + sizeof(memory_t) + new->len );
         printf("return should be :%p\n", (void *) (long)new + sizeof(memory_t));
-        //printf("size of struct %ld<->\n", sizeof(memory_t));
         new = new->next;
     }
     printf("----------------------\n\n");
