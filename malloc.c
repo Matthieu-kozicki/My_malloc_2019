@@ -38,7 +38,7 @@ void *malloc(size_t len)
         memory_unused = (pages * unit) - (sizeof(memory_t) + (int)power(len));
         mem->used = true;
         mem->len = power(len);
-        mem->next = NULL;   
+        mem->next = NULL;
         mem->head = mem;
         return ((void *) (long)mem  + sizeof(memory_t));
     }
