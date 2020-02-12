@@ -15,9 +15,6 @@ void print_linked(memory_t *mem)
     while (new != NULL) {
         printf("node size : %ld ", new->len);
         printf("adress is : %p ", new);
-        printf("%s", new->used ? "is used :true " : "is used : false ");
-        printf("new should be : %p\n", (void *) (long)new + sizeof(memory_t) + new->len );
-        printf("return should be :%p\n", (void *) (long)new + sizeof(memory_t));
         new = new->next;
     }
     printf("----------------------\n\n");

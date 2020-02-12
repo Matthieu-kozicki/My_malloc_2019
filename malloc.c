@@ -29,7 +29,8 @@ void *malloc(size_t len)
     static long unsigned int memory_unused = 0;
     int pages = 2 * getpagesize();
     memory_t *tmp = NULL;
-    int unit = ( sizeof(memory_t) + power(len)) / pages + (sizeof(memory_t) + (power(len)) % pages != 0);
+    int unit = ( sizeof(memory_t) + power(len)) / pages + (sizeof(memory_t)
+    + (power(len)) % pages != 0);
 
     if (len == 0) return (NULL);
     if (mem == NULL) {
