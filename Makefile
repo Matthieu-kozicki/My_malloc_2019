@@ -5,9 +5,10 @@
 ## Makefile
 ##
 
-SRC	=	malloc.c \
+SRC	=	malloc.c 		\
 		linked_list.c 	\
-		my_put_nbr.c
+		my_put_nbr.c	\
+		calcul.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -22,9 +23,9 @@ NAME	=	 libmy_malloc.so
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	##@echo compile $(NAME)
-	$(CC) -c -fpic  $(SRC) $(CFLAGS)
-	$(CC) $(OBJ) -shared -o $(NAME)
+	@echo compile $(NAME)
+	@$(CC) -c -fpic  $(SRC) $(CFLAGS)
+	@$(CC) $(OBJ) -shared -o $(NAME)
 
 %.o: %.cpp
 	@$(CC) -o $@ -c $< $(CFLAGS)

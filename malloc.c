@@ -17,65 +17,11 @@ void free(void *ptr)
 		return;
 	while (tmp != NULL) {
 		if ((void *) (long)tmp + sizeof(memory_t) == ptr) {
-			//my_put_nbr(tmp->len);
-			//write(1,"free\n",5);
 			tmp->used = false;
 			return;
 		}
 		tmp = tmp->next;
 	}
-}
-
-/*void *calloc(size_t nmemb, size_t size)
-{
-	size_t total = nmemb * size;
-	void *ptr = my_malloc(total);
-
-	if (!ptr) return (NULL);
-	
-}*/
-
-/*void *realloc(void *ptr, size_t size)
-{
-	ptr = ptr;
-	size = size;
-	write(1,"realloc",7);
-	return (NULL);
-}*/
-
-/*void *reallocarray(void *ptr, size_t nmemb , size_t size)
-{
-	ptr = ptr;
-	nmemb = nmemb;
-	size = size;
-	write(1,"realocarray",11);
-	return (NULL);
-}*/
-
-size_t power(size_t len)
-{
-	size_t count = 1;
-
-	while (count < len)
-		count = count * 2;
-	return (count);
-}
-
-void *put_in_end(size_t len, memory_t *mem)
-{
-	memory_t *tmp = mem->head;
-	memory_t *here = NULL;
-
-	while (tmp->next != NULL) {
-		tmp = tmp->next;
-	}
-	here = (void *)(long)tmp + sizeof(memory_t) + tmp->len;
-	here->used = true;
-	here->len = power(len);
-	here->next = NULL;
-	here->head = mem->head;
-	tmp->next = here;
-	return ((void *) (long)here + sizeof(memory_t));
 }
 
 void *malloc(size_t len)
@@ -98,7 +44,6 @@ void *malloc(size_t len)
 	}
 	tmp = find_place_list(len, mem);
 	if (tmp != NULL) {
-		memory_unused -= (sizeof(memory_t) + (int)power(len));
 		return (tmp);
 	} else if (memory_unused < sizeof(memory_t) + (int)power(len)) {
 		if (sbrk(pages * unit) == (void *)-1)
@@ -109,36 +54,64 @@ void *malloc(size_t len)
 	return (put_in_end(len, mem));
 }
 
-/*int main(void)
+void *realloc(void *ptr, size_t size)
 {
-	//char *str = my_malloc(8);
-	char *ne = my_malloc(20000);
-	char *e = my_malloc(120);
-	char *es = my_malloc(50);
-	char *est = my_malloc(17);
+	memory_t *save = NULL;
 
-	//str[0] = '1';
-	//printf("%p\n", str);
-	//printf("2nd %p", ne);
-	ne[0] = 'e';
-	e[0] = 'e';
-	my_free(e);
-	my_free(es);
-	my_free(est);
-	char *here = my_malloc(10);
-	here[4] = 'e';
-	//printf("3nd %p", here);
-	print_linked(mem);
-	my_free(here);
-	//my_free(str);
-	//printf("%p",ne);
-	//my_free(str);
-	return (0);
+	if (ptr == NULL)
+		return (malloc(size));
+	if (size == 0 && ptr != NULL) {
+		free(ptr);
+		return (NULL);
+	}
+	save = (void *)((long)ptr - sizeof(memory_t));
+	if (size <= save->len)
+		return (ptr);
+	free(ptr);
+
+	return (memcpy(malloc(size), ptr, save->len));
+}
+
+void *reallocarray(void *ptr, size_t nmemb , size_t size)
+{
+	if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
+	return (realloc(ptr, size* nmemb));
+}
+
+void *calloc(size_t nmemb, size_t size)
+{
+	size_t total = nmemb * size;
+	char *ptr = NULL;
+
+	if (mul_overflow((int)nmemb, (int)size) == false) return (NULL);
+	ptr = malloc(total);
+	if (!ptr) return (NULL);
+	for (size_t count = 0; count < total; count++)
+		ptr[count] = 0;
+	return (ptr);
+}
+
+/*int main() 
+{ 
+   int *ptr = (int *)my_malloc(sizeof(int)*2); 
+   int i; 
+   int *ptr_new; 
+     
+   *ptr = 10;  
+   *(ptr + 1) = 20; 
+     
+   ptr_new = (int *)my_realloc(ptr, sizeof(int)*3); 
+   *(ptr_new + 2) = 30; 
+   for(i = 0; i < 3; i++) 
+       printf("%d ", *(ptr_new + i)); 
+	my_free(ptr_new);
+   //getchar(); 
+   return 0; 
 }*/
 
-/*int main(void)
+/*int main (void)
 {
-	for(int i = 0; i < 200; i++)
-		my_malloc(10000);
-	return(0);
+	for (int i = 0; i < 100; i++)
+		malloc(1000);
+	return (0);
 }*/

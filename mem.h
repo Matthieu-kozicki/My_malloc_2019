@@ -8,6 +8,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <string.h>
+#include <limits.h>
 #include <stdbool.h>
 
 #ifndef MEM_H_
@@ -30,9 +33,14 @@ void *reallocarray(void *ptr, size_t nmemb, size_t size);
 /* linked list */
 void print_linked(memory_t *mem);
 void *find_place_list(size_t len, memory_t *mem);
+void *put_in_end(size_t len, memory_t *mem);
 
 void  my_put_nbr(int nb);
 void my_put_base(char *base, unsigned int nb);
 int my_put_adress(long nb);
+
+/* calcul */
+size_t power(size_t len);
+bool mul_overflow(int x, int y);
 
 #endif /* !MEM_H_ */
