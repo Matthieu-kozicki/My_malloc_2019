@@ -22,3 +22,15 @@ bool mul_overflow(int x, int y)
         return (false);
     return (true);
 }
+
+memory_t *init_list(memory_t *mem, int total, size_t len,
+    long unsigned int *memory_unused)
+{
+    mem = sbrk(total);
+    *memory_unused = (total) - (sizeof(memory_t) + (int)power(len));
+    mem->used = true;
+    mem->len = power(len);
+    mem->next = NULL;
+    mem->head = mem;
+    return (mem);
+}

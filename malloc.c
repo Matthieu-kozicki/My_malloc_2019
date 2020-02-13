@@ -34,12 +34,7 @@ void *malloc(size_t len)
 
     if (len == 0) return (NULL);
     if (mem == NULL) {
-        mem = sbrk(pages * unit);
-        memory_unused = (pages * unit) - (sizeof(memory_t) + (int)power(len));
-        mem->used = true;
-        mem->len = power(len);
-        mem->next = NULL;
-        mem->head = mem;
+        mem = init_list(mem, pages* unit, len, &memory_unused);
         return ((void *) (long)mem  + sizeof(memory_t));
     }
     tmp = find_place_list(len, mem);

@@ -23,6 +23,9 @@ typedef struct memory_s {
     struct memory_s *head;
 } memory_t;
 
+/* global struct */
+extern memory_t *mem;
+
 /* malloc */
 void *malloc(size_t len);
 void free(void *ptr) ;
@@ -35,12 +38,10 @@ void print_linked(memory_t *mem);
 void *find_place_list(size_t len, memory_t *mem);
 void *put_in_end(size_t len, memory_t *mem);
 
-void  my_put_nbr(int nb);
-void my_put_base(char *base, unsigned int nb);
-int my_put_adress(long nb);
-
 /* calcul */
 size_t power(size_t len);
 bool mul_overflow(int x, int y);
+memory_t *init_list(memory_t *mem, int total, size_t len,
+    long unsigned int *memory_unused);
 
 #endif /* !MEM_H_ */

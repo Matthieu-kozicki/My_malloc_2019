@@ -20,6 +20,23 @@ void print_linked(memory_t *mem)
     printf("----------------------\n\n");
 }
 
+static memory_t *uptade(int *time, size_t *saving, memory_t *save,memory_t *tmp)
+{
+    *time = *time + 1;
+    save = (void *) (long)tmp;
+    *saving = save->len;
+    save = (void *) (long)save + (sizeof(memory_t));
+    return (save);
+}
+
+static memory_t *uptade2(memory_t *save)
+{
+    save = (void *) (long)save - sizeof(memory_t);
+    save->used = true;
+    save = (void *) (long)save + sizeof(memory_t);
+    return (save);
+}
+
 void *find_place_list(size_t len, memory_t *mem)
 {
     int time = 0;
@@ -29,12 +46,8 @@ void *find_place_list(size_t len, memory_t *mem)
 
     while (tmp != NULL) {
         if (tmp->used == false && tmp->len >= len) {
-            if (time == 0) {
-                time++;
-                save = (void *) (long)tmp;
-                saving = save->len;
-                save = (void *) (long)save + (sizeof(memory_t));
-            }
+            if (time == 0)
+                save = uptade(&time, &saving, save, tmp);
             if (time != 0 && tmp->len < saving) {
                 saving = tmp->len;
                 save = (void *) (long)tmp + (sizeof(memory_t));
@@ -42,11 +55,8 @@ void *find_place_list(size_t len, memory_t *mem)
         }
         tmp = tmp->next;
     }
-    if (time != 0) {
-        save = (void *) (long)save - sizeof(memory_t);
-        save->used = true;
-        save = (void *) (long)save + sizeof(memory_t);
-    }
+    if (time != 0)
+        save = uptade2(save);
     return (save);
 }
 
